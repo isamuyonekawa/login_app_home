@@ -1,7 +1,7 @@
 <?php
 
 function user_name_validation($name) {
-    if (!preg_match('/\A[a-z0-9]{6,50}\z/ui', $name)) {
+    if (!preg_match('/\A[a-z0-9]{5,50}\z/ui', $name)) {
         return 'ユーザー名は5文字以上50文字以下の英数字を入力してください';
     } else {
         require('dbconnect.php');

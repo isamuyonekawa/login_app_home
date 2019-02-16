@@ -27,6 +27,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     exit();
   }
 }
+
 ?>
 
 <!DOCTYPE html>
@@ -53,7 +54,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     <form action="" method="post">
       <div>
         <label for="name">Name:</label>
-        <input type="text" id="name" name="user_name" minlength="6">
+        <input type="text" id="name" name="user_name" minlength="5">
       </div>
       <div>
         <label for="pass">Password:</label>

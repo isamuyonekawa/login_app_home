@@ -1,6 +1,7 @@
 <?php
 require('dbconnect.php');
 session_start();
+
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
   $state = $db->prepare('SELECT * FROM admin WHERE user_name=?');
   $state->execute(array(
@@ -10,13 +11,17 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
   
   $errors = array();
   if ($user && password_verify($_POST['password'], $user['password']) && $user['delete_flag'] == 0) {
+    
+    //セッションIDの変更
+    session_regenerate_id(true);
     $_SESSION['id'] = $user['id'];
-    header('Location: admin_index.php');
+    header('Location: index.php');
     exit();
   } else {
     $errors['sign_in'] = 'ユーザー名またはパスワードが間違っています';
   }
 }
+
 ?>
 
 <!DOCTYPE html>
@@ -43,11 +48,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     <form action="" method="post">
       <div>
         <label for="name">Name:</label>
-        <input type="text" id="name" name="user_name" minlength="6">
+        <input type="text" id="name" name="user_name">
       </div>
       <div>
         <label for="pass">Password:</label>
-        <input type="password" id="pass" name="password" minlength="8">
+        <input type="password" id="pass" name="password">
       </div>
       <div class="button">
         <button type="submit">Send</button>

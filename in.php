@@ -1,6 +1,6 @@
 <?php
 require('dbconnect.php');
-if ($_SERVER('REQUEST_METHOD') == "POST") {
+if ($_SERVER['REQUEST_METHOD'] == "POST") {
     //打刻処理
 }
 ?>
