@@ -7,7 +7,7 @@ if (!isset($_SESSION['id'])) {
 }
 
 $_SESSION = array();
-setcookie(session_name(), '', time() - 1, '/' );
+setcookie(session_name(), '', time() - 3600, '/' );
 session_destroy();
 
 header('Location: sign_in.php');

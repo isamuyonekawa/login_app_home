@@ -39,7 +39,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
   </head>
   <body>
     <header>
-      
+    
     </header>
     <h1>Sign Up</h1>
 
