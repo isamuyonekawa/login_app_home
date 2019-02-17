@@ -18,7 +18,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
   $error = confirmation_validation($_POST['confirmation'], $_POST['password']);
   if (isset($error)) {
-    $errors['condirmation'] = $error;
+    $errors['confirmation'] = $error;
   }
   
   if (empty($errors)) {
