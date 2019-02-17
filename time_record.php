@@ -73,6 +73,8 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
     }
 }
 
+$time_records = $db->query('SELECT * FROM time_record, employees WHERE time_record.employee_id=employees.id ORDER BY date DESC, time DESC');
+
 ?>
 
 <!DOCTYPE html>
@@ -80,6 +82,7 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
 <head>
     <meta charset="utf-8" />
     <title>TOP</title>
+    <link rel="stylesheet" type="text/css" href="./css/time_record.css">
 </head>
 <body>
     <header>
@@ -130,7 +133,14 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
     </main>
 
     <aside>
-
+        <div class="time_records">
+            <ul>
+                <?php while ($t = $time_records->fetch()): ?>
+                    <?php $status = $t['status'] == 0 ? '出勤' : '退勤' ?>
+                    <li><?php echo $t['last_name'] . ' ' . $t['first_name'] . ' ' . $t['date'] . ' ' . $t['time'] . ' ' . $status; ?></li>
+                <?php endwhile; ?>
+            </ul>
+       </div>
     </aside>
 </body>
 </html>
