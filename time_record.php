@@ -24,14 +24,12 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
                         date('Y-m-d'),
                     ));
                     $in_record = $search_in_time->fetch();
-
                     $search_out_time = $db->prepare('SELECT * FROM time_record WHERE employee_id=? AND date=? AND status="1"');
                     $search_out_time->execute(array(
                         $user['id'],
                         date('Y-m-d'),
                     ));
                     $out_record = $search_out_time->fetch();
-
                     if ($in_record == false) {
                         $error = 'code3';
                     } elseif ($out_record != false) {
@@ -45,7 +43,7 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
                             $status
                         ));
                     }
-                    break; 
+                    break;
 
                 case 0: //statusが出勤の場合
                     $time = $db->prepare('SELECT * FROM time_record WHERE employee_id=? AND date=? AND status=?');

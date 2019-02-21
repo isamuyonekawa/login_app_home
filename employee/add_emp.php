@@ -10,7 +10,7 @@ if (!isset($_SESSION['id'])) {
 //社員登録機能作成
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $errors = array();
-
+    
     $error = last_first_validation($_POST['last_name'], $_POST['first_name']);
     if (isset($error)) {
         $errors['last_first'] = $error;
@@ -20,7 +20,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     if (isset($error)) {
         $errors['emp_user_name'] = $error;
     }
-
+    
     if (empty($errors)) {
         $_SESSION['join'] = $_POST;
         header('Location: check_add_emp.php');
@@ -38,7 +38,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 </head>
 <body>
     <header>
-
+        <a href="/login_app/admin/index.php">index</a>
     </header>
     <main>
         <h1>社員登録</h1>
