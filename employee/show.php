@@ -4,7 +4,7 @@ require('UserClass.php');
 session_start();
 
 if (!isset($_SESSION['id'])) {
-    header('Location: sign_in.php');
+    header('Location: /login_app/admin/sign_in.php');
     exit();
 }
 
@@ -54,7 +54,7 @@ if (isset($_GET['id']) || isset($_POST['id'])) {
     </header>
     <h1>showです</h1>
 
-    <!-- 社員名編集、社員削除、出退勤履歴、を追加する -->
+    <!-- 社員削除、出退勤履歴、を追加する -->
     <?php if (isset($record)): ?> 
         <p>現在のお名前： <?php echo $emp->getName(); ?></p>
         <p>ユーザー名： <?php echo $emp->getUserName(); ?></p>
