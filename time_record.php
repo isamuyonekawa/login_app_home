@@ -10,10 +10,12 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
         setcookie('status', '', time() - 3600, '/');
         setcookie('status', $status);
         $_COOKIE['status'] = $status;
-
-        $emp = $db->prepare('SELECT * FROM employees WHERE emp_user_name=?');
-        $emp->execute(array($name));
-
+        $flag = 0;
+        $emp = $db->prepare('SELECT * FROM employees WHERE emp_user_name=? AND emp_delete_flag=?');
+        $emp->execute(array(
+            $name,
+            $flag
+        ));
         // 社員が存在するか？
         if ($user = $emp->fetch()) {
             switch ($status) {
@@ -44,7 +46,6 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
                         ));
                     }
                     break;
-
                 case 0: //statusが出勤の場合
                     $time = $db->prepare('SELECT * FROM time_record WHERE employee_id=? AND date=? AND status=?');
                     $time->execute(array(
@@ -72,7 +73,6 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
 }
 
 $time_records = $db->query('SELECT * FROM time_record, employees WHERE time_record.employee_id=employees.id ORDER BY date DESC, time DESC');
-
 ?>
 
 <!DOCTYPE html>
@@ -84,7 +84,8 @@ $time_records = $db->query('SELECT * FROM time_record, employees WHERE time_reco
 </head>
 <body>
     <header>
-        <a href="./admin/sign_in.php">管理者ログイン</a>
+        <a href="/login_app/admin/sign_in.php">管理者ログイン</a>
+        <a href="/login_app/admin/sign_up.php">管理者登録</a>
     </header>
 
     <?php if ($error == 'code1'): ?>

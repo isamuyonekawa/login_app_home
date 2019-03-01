@@ -1,7 +1,5 @@
 <?php
-//ユーザーshowで使用する案
-
-class User 
+class Employee 
 {
     private $id;
     private $last;
@@ -20,7 +18,7 @@ class User
 
     public function getName()
     {
-        return $this->last . ' ' . $this->first;
+        return htmlspecialchars($this->last . ' ' . $this->first, ENT_QUOTES, 'UTF-8');
     }
 
     public function getId()
@@ -30,19 +28,19 @@ class User
 
     public function getLast()
     {
-        return $this->last;
+        return htmlspecialchars($this->last, ENT_QUOTES, 'UTF-8');
     }
 
     public function getFirst()
     {
-        return $this->first;
+        return htmlspecialchars($this->first, ENT_QUOTES, 'UTF-8');
     }
-
+    
     public function getUserName()
     {
         return $this->userName;
     }
-
+    
     public function getFlag()
     {
         return $this->flag;

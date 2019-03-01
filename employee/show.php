@@ -1,6 +1,6 @@
 <?php
 require('dbconnect.php');
-require('UserClass.php');
+require('EmployeeClass.php');
 session_start();
 
 if (!isset($_SESSION['id'])) {
@@ -9,15 +9,22 @@ if (!isset($_SESSION['id'])) {
 }
 
 if (isset($_GET['id']) || isset($_POST['id'])) {
-
     if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $id = $_POST['id'];
-        $update_emp = $db->prepare('UPDATE employees SET last_name=?, first_name=? WHERE id=?');
+        // 以下代入の条件を考える02/28
+        $flag = isset($_POST['flag']) && $_POST['flag'] == 1 ? 1 : 0;
+        $update_emp = $db->prepare('UPDATE employees SET last_name=?, first_name=?, emp_delete_flag=? WHERE id=?');
         $update_emp->execute(array(
             $_POST['last_name'],
             $_POST['first_name'],
+            $flag,
             $id
         ));
+        //削除が選択された場合は、検索ページへ移動
+        if ($flag == 1) {
+            header('Location: /login_app/employee/search.php');
+            exit();
+        }
     }
 
     if ($_SERVER['REQUEST_METHOD'] == 'GET') {
@@ -31,14 +38,13 @@ if (isset($_GET['id']) || isset($_POST['id'])) {
 
     //Userインスタンス作成
     if (isset($record)) {
-        $emp = new User($record['id'], $record['last_name'], $record['first_name'], $record['emp_user_name'], $record['emp_delete_flag']);
+        $emp = new Employee($record['id'], $record['last_name'], $record['first_name'], $record['emp_user_name'], $record['emp_delete_flag']);
     }
-
+    
     //出退勤履歴取得
     $time_record = $db->prepare('SELECT * FROM time_record where employee_id=? ORDER BY date DESC, time DESC');
     $time_record->execute(array($id));
 }
-
 ?>
 
 <!DOCTYPE html>
@@ -61,14 +67,25 @@ if (isset($_GET['id']) || isset($_POST['id'])) {
 
         <form action="" method="POST">
             <div>
-                <label for="last_name">お名前:</label>
-                <input type="text" name="last_name" maxlength="50" placeholder="姓" class="name" id="last_name" 
-                required value="<?php echo $emp->getLast(); ?>"> 
-                <input type="text" name="first_name" maxlength="50" placeholder="名" class="name" required value="<?php echo $emp->getFirst(); ?>">
+                <?php if ($emp->getFlag() == 0): ?>
+                    <!-- 社員が生きている場合 -->
+                    <div>
+                        <label for="last_name">お名前:</label>
+                        <input type="text" name="last_name" maxlength="50" placeholder="姓" class="name" id="last_name" required value="<?php echo $emp->getLast(); ?>"> 
+                        <input type="text" name="first_name" maxlength="50" placeholder="名" class="name" required value="<?php echo $emp->getFirst(); ?>">
+                    </div>
+                    <p>削除する場合、以下にチェックをいれてください。</P>
+                    <input type="checkbox" name="flag" value="1">削除
+                <?php elseif ($emp->getFlag() == 1): ?>
+                    <!-- 社員が削除済みの場合 -->
+                    <input type="hidden" name="last_name" value="<?php echo $emp->getLast(); ?>">
+                    <input type="hidden" name="first_name" value="<?php echo $emp->getFirst(); ?>">
+                    <input type="hidden" name="flag" value="0">
+                <?php endif; ?>
             </div>
             <input type="hidden" name="id" value="<?php echo $emp->getId(); ?>">
             <div class="button">
-                <button type="submit">更新</button>
+                <button type="submit"><?php echo $emp->getFlag() == 0 ? '更新' : '社員を復元'; ?></button>
             </div>
         </form>
     <?php endif ?>

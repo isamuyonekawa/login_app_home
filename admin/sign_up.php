@@ -5,7 +5,7 @@ session_start();
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
   $errors = array();
-
+  
   $error = user_name_validation($_POST['user_name']);
   if (isset($error)) {
     $errors['user_name'] = $error;
@@ -27,7 +27,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     exit();
   }
 }
-
 ?>
 
 <!DOCTYPE html>
@@ -39,7 +38,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
   </head>
   <body>
     <header>
-    
+      <a href="/login_app/time_record.php">タイムカード</a>
     </header>
     <h1>Sign Up</h1>
 
