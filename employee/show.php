@@ -41,9 +41,6 @@ if (isset($_GET['id']) || isset($_POST['id'])) {
         $emp = new Employee($record['id'], $record['last_name'], $record['first_name'], $record['emp_user_name'], $record['emp_delete_flag']);
     }
     
-    //出退勤履歴取得
-    $time_record = $db->prepare('SELECT * FROM time_record where employee_id=? ORDER BY date DESC, time DESC');
-    $time_record->execute(array($id));
 }
 ?>
 
@@ -65,29 +62,41 @@ if (isset($_GET['id']) || isset($_POST['id'])) {
         <p>現在のお名前： <?php echo $emp->getName(); ?></p>
         <p>ユーザー名： <?php echo $emp->getUserName(); ?></p>
 
-        <form action="" method="POST">
-            <div>
-                <?php if ($emp->getFlag() == 0): ?>
-                    <!-- 社員が生きている場合 -->
-                    <div>
-                        <label for="last_name">お名前:</label>
-                        <input type="text" name="last_name" maxlength="50" placeholder="姓" class="name" id="last_name" required value="<?php echo $emp->getLast(); ?>"> 
-                        <input type="text" name="first_name" maxlength="50" placeholder="名" class="name" required value="<?php echo $emp->getFirst(); ?>">
-                    </div>
-                    <p>削除する場合、以下にチェックをいれてください。</P>
-                    <input type="checkbox" name="flag" value="1">削除
-                <?php elseif ($emp->getFlag() == 1): ?>
-                    <!-- 社員が削除済みの場合 -->
-                    <input type="hidden" name="last_name" value="<?php echo $emp->getLast(); ?>">
-                    <input type="hidden" name="first_name" value="<?php echo $emp->getFirst(); ?>">
-                    <input type="hidden" name="flag" value="0">
-                <?php endif; ?>
-            </div>
-            <input type="hidden" name="id" value="<?php echo $emp->getId(); ?>">
-            <div class="button">
-                <button type="submit"><?php echo $emp->getFlag() == 0 ? '更新' : '社員を復元'; ?></button>
-            </div>
-        </form>
+        <div>
+            <form action="" method="POST">
+                <div>
+                    <?php if ($emp->getFlag() == 0): ?>
+                        <!-- 社員が生きている場合 -->
+                        <div>
+                            <label for="last_name">お名前:</label>
+                            <input type="text" name="last_name" maxlength="50" placeholder="姓" class="name" id="last_name" required value="<?php echo $emp->getLast(); ?>"> 
+                            <input type="text" name="first_name" maxlength="50" placeholder="名" class="name" required value="<?php echo $emp->getFirst(); ?>">
+                        </div>
+                        <p>削除する場合、以下にチェックをいれてください。</P>
+                        <input type="checkbox" name="flag" value="1">削除
+                    <?php elseif ($emp->getFlag() == 1): ?>
+                        <!-- 社員が削除済みの場合 -->
+                        <input type="hidden" name="last_name" value="<?php echo $emp->getLast(); ?>">
+                        <input type="hidden" name="first_name" value="<?php echo $emp->getFirst(); ?>">
+                        <input type="hidden" name="flag" value="0">
+                    <?php endif; ?>
+                </div>
+                <input type="hidden" name="id" value="<?php echo $emp->getId(); ?>">
+                <div class="button">
+                    <button type="submit"><?php echo $emp->getFlag() == 0 ? '更新' : '社員を復元'; ?></button>
+                </div>
+            </form>
+        </div>
+
+        <div>
+            <h2>出退勤履歴を検索</h2>
+            <p>表示したい年月を指定してください</p>
+            <form action="time_record_history.php" method="POST">
+                <input type="hidden" name="id" value="<?php echo $emp->getId(); ?>">
+                <input type="month" name="y_m" value="<?php echo date("Y-m"); ?>" required>
+                <input type="submit" value="検索">
+            </form>
+        </div>
     <?php endif ?>
 </body>
 </html>
