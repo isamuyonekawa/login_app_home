@@ -20,9 +20,9 @@ if (isset($_GET['id']) || isset($_POST['id'])) {
             $flag,
             $id
         ));
-        //削除が選択された場合は、検索ページへ移動
+        //削除が選択された場合は、移動
         if ($flag == 1) {
-            header('Location: /login_app/employee/search.php');
+            header('Location: /login_app/employee/emp_delete.php');
             exit();
         }
     }
@@ -48,20 +48,30 @@ if (isset($_GET['id']) || isset($_POST['id'])) {
 <html>
 <head>
     <meta charset="utf-8">
-    <title>show</title>
+    <title>社員編集</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="../css/show.css">
 </head>
 <body>
     <header>
-        <a href="/login_app/admin/index.php">index</a>
-        <a href="/login_app/employee/search.php">社員一覧</a>
+        <a href="/login_app/admin/index.php">管理者トップ画面</a>
     </header>
-    <h1>showです</h1>
 
     <!-- 社員削除、出退勤履歴、を追加する -->
+    <div class="main">
+    <a href="/login_app/employee/search.php">社員検索</a>
+    <h1>社員編集</h1>
     <?php if (isset($record)): ?> 
-        <p>現在のお名前： <?php echo $emp->getName(); ?></p>
-        <p>ユーザー名： <?php echo $emp->getUserName(); ?></p>
-
+        <table>
+            <tr>
+                <td class="table-right">現在のお名前：</td>
+                <td class="table-left"><?php echo $emp->getName(); ?></td>
+            </tr>
+            <tr>
+                <td class="table-right">ユーザー名：</td>
+                <td class="table-left"><?php echo $emp->getUserName(); ?></td>
+            </tr>
+        </table>
         <div>
             <form action="" method="POST">
                 <div>
@@ -72,8 +82,9 @@ if (isset($_GET['id']) || isset($_POST['id'])) {
                             <input type="text" name="last_name" maxlength="50" placeholder="姓" class="name" id="last_name" required value="<?php echo $emp->getLast(); ?>"> 
                             <input type="text" name="first_name" maxlength="50" placeholder="名" class="name" required value="<?php echo $emp->getFirst(); ?>">
                         </div>
-                        <p>削除する場合、以下にチェックをいれてください。</P>
-                        <input type="checkbox" name="flag" value="1">削除
+                        <div class="check">
+                            社員削除:<input type="checkbox" name="flag" value="1">
+                        </div>
                     <?php elseif ($emp->getFlag() == 1): ?>
                         <!-- 社員が削除済みの場合 -->
                         <input type="hidden" name="last_name" value="<?php echo $emp->getLast(); ?>">
@@ -98,5 +109,6 @@ if (isset($_GET['id']) || isset($_POST['id'])) {
             </form>
         </div>
     <?php endif ?>
+    </div>
 </body>
 </html>

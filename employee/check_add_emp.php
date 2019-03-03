@@ -32,6 +32,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_SESSION['join'])) {
 <head>
     <meta charset="utf-8" />
     <title>社員登録確認</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" type="text/css" href="../css/emp_form.css">
 </head>
 <body>

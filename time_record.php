@@ -7,10 +7,10 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
     if (isset($_POST['user_name']) && isset($_POST['status'])) {
         $name = $_POST['user_name'];
         $status = $_POST['status'];
+        $flag = 0;
         setcookie('status', '', time() - 3600, '/');
         setcookie('status', $status);
         $_COOKIE['status'] = $status;
-        $flag = 0;
         $emp = $db->prepare('SELECT * FROM employees WHERE emp_user_name=? AND emp_delete_flag=?');
         $emp->execute(array(
             $name,
@@ -78,8 +78,9 @@ $time_records = $db->query('SELECT * FROM time_record, employees WHERE time_reco
 <!DOCTYPE html>
 <html>
 <head>
-    <meta charset="utf-8" />
-    <title>TOP</title>
+    <meta charset="utf-8">
+    <title>出退勤打刻ページ</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" type="text/css" href="./css/time_record.css">
 </head>
 <body>
@@ -88,28 +89,12 @@ $time_records = $db->query('SELECT * FROM time_record, employees WHERE time_reco
         <a href="/login_app/admin/sign_up.php">管理者登録</a>
     </header>
 
-    <?php if ($error == 'code1'): ?>
-        <script>alert('ユーザー名に一致する社員が存在しません');</script>
-    <?php elseif ($error == 'code2'): ?>
-        <script>alert('本日は既に「出勤」を打刻済みです');</script>
-    <?php elseif ($error == 'code3'): ?>
-        <script>alert('本日の「出勤」を打刻していません');</script>
-    <?php elseif ($error == 'code4'): ?>
-        <script>alert('本日は既に「退勤」を打刻済みです');</script>
-    <?php endif; ?>
-
-    <main>
-        <h1 id="time"></h1>
+    <div class="wrapper">
+    <div class="left">
         <div>
-            <script>
-                time();
-                function time(){
-                    var now = new Date();
-                    document.getElementById("time").innerHTML = now.toLocaleString();
-                }
-                setInterval('time()',1000);
-            </script>
-
+            <h1 id="time"></h1>
+        <div>
+        <div>
             <form action="" method="POST">
                 <div>
                     <?php if (isset($_COOKIE['status'])): ?>
@@ -120,7 +105,6 @@ $time_records = $db->query('SELECT * FROM time_record, employees WHERE time_reco
                         <input type="radio" name="status" value="1">退勤
                     <?php endif; ?>
                 </div>
-
                 <div>
                     <input type="text" name="user_name" required id="user_name" placeholder="ユーザー名" autocomplete="off" autofocus>
                 </div>
@@ -129,9 +113,9 @@ $time_records = $db->query('SELECT * FROM time_record, employees WHERE time_reco
                 </div>
             </form>
         </div>
-    </main>
+    </div>
 
-    <aside>
+    <div class="right">
         <div class="time_records">
             <ul>
                 <?php while ($t = $time_records->fetch()): ?>
@@ -140,6 +124,26 @@ $time_records = $db->query('SELECT * FROM time_record, employees WHERE time_reco
                 <?php endwhile; ?>
             </ul>
        </div>
-    </aside>
+    </div>
+    </div>
+
+    <script>
+        time();
+        function time(){
+            var now = new Date();
+            document.getElementById("time").innerHTML = now.toLocaleString();
+        }
+        setInterval('time()',1000);
+    </script>
+
+    <?php if ($error == 'code1'): ?>
+        <script>alert('ユーザー名に一致する社員が存在しません');</script>
+    <?php elseif ($error == 'code2'): ?>
+        <script>alert('本日は既に「出勤」を打刻済みです');</script>
+    <?php elseif ($error == 'code3'): ?>
+        <script>alert('本日の「出勤」を打刻していません');</script>
+    <?php elseif ($error == 'code4'): ?>
+        <script>alert('本日は既に「退勤」を打刻済みです');</script>
+    <?php endif; ?>
 </body>
 </html>
