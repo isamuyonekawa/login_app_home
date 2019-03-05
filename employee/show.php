@@ -1,6 +1,7 @@
 <?php
 require('dbconnect.php');
 require('EmployeeClass.php');
+require('emp_validations.php');
 session_start();
 
 if (!isset($_SESSION['id'])) {
@@ -11,19 +12,21 @@ if (!isset($_SESSION['id'])) {
 if (isset($_GET['id']) || isset($_POST['id'])) {
     if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $id = $_POST['id'];
-        // 以下代入の条件を考える02/28
-        $flag = isset($_POST['flag']) && $_POST['flag'] == 1 ? 1 : 0;
-        $update_emp = $db->prepare('UPDATE employees SET last_name=?, first_name=?, emp_delete_flag=? WHERE id=?');
-        $update_emp->execute(array(
-            $_POST['last_name'],
-            $_POST['first_name'],
-            $flag,
-            $id
-        ));
-        //削除が選択された場合は、移動
-        if ($flag == 1) {
-            header('Location: /login_app/employee/emp_delete.php');
-            exit();
+        $error = last_first_validation($_POST['last_name'], $_POST['first_name']);
+        if (!isset($error)) {
+            $flag = isset($_POST['flag']) && $_POST['flag'] == 1 ? 1 : 0;
+            $update_emp = $db->prepare('UPDATE employees SET last_name=?, first_name=?, emp_delete_flag=? WHERE id=?');
+            $update_emp->execute(array(
+                $_POST['last_name'],
+                $_POST['first_name'],
+                $flag,
+                $id
+            ));
+            //削除が選択された場合は、移動
+            if ($flag == 1) {
+                header('Location: /login_app/employee/emp_delete.php');
+                exit();
+            }
         }
     }
 
@@ -40,7 +43,6 @@ if (isset($_GET['id']) || isset($_POST['id'])) {
     if (isset($record)) {
         $emp = new Employee($record['id'], $record['last_name'], $record['first_name'], $record['emp_user_name'], $record['emp_delete_flag']);
     }
-    
 }
 ?>
 
@@ -61,6 +63,12 @@ if (isset($_GET['id']) || isset($_POST['id'])) {
     <div class="main">
     <a href="/login_app/employee/search.php">社員検索</a>
     <h1>社員編集</h1>
+    <?php if (isset($error)): ?>
+        <ul class="validation_error">
+            <li><?php echo $error; ?></li>
+        </ul>
+    <?php endif; ?>
+
     <?php if (isset($record)): ?> 
         <table>
             <tr>
