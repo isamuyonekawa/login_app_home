@@ -18,6 +18,10 @@ td {
     background-color: #CBFFD3;
 }
 
+.out {
+    background-color: #FFBEDA;
+}
+
 input.radio {
     transform: scale(1.5);
 }

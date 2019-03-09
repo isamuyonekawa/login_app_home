@@ -121,10 +121,11 @@ $time_records = $db->query('SELECT * FROM time_record, employees WHERE time_reco
             <table>
                 <?php while ($t = $time_records->fetch()): ?>
                     <?php $status = $t['status'] == 0 ? '出勤' : '退勤' ?>
+                    <?php $class = $t['status'] == 0 ? 'in' : 'out' ?>
                     <tr>
                         <td><?php echo $t['last_name'] . ' ' . $t['first_name']; ?></td>
                         <td><?php echo $t['date']. ' ' . $t['time']; ?></td>
-                        <td id="status" class="in"><?php echo $status; ?></td>
+                        <td id="status" class="<?php echo $class ?>"><?php echo $status; ?></td>
                     </tr>
                 <?php endwhile; ?>
             </table>
