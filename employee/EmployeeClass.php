@@ -16,6 +16,11 @@ class Employee
         $this->flag     = $flag;
     }
 
+    public function escape($obj)
+    {
+        return htmlspecialchars($obj, ENT_QUOTES, 'UTF-8');
+    }
+
     public function getName()
     {
         return htmlspecialchars($this->last . ' ' . $this->first, ENT_QUOTES, 'UTF-8');
@@ -35,10 +40,10 @@ class Employee
     {
         return htmlspecialchars($this->first, ENT_QUOTES, 'UTF-8');
     }
-    
+
     public function getUserName()
     {
-        return $this->userName;
+        return htmlspecialchars($this->userName, ENT_QUOTES, 'UTF-8');
     }
     
     public function getFlag()

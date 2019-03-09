@@ -1,6 +1,6 @@
 header {
     height: 50px;
-    background-color: pink;
+    background-color: #EEEEEE;
 }
 
 .time_records {
@@ -8,4 +8,16 @@ header {
     height: 500px;
     background-color: antiquewhite;
     overflow: scroll;
+}
+
+td {
+    padding: 2px;
+}
+
+.in {
+    background-color: #CBFFD3;
+}
+
+input.radio {
+    transform: scale(1.5);
 }

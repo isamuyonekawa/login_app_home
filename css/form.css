@@ -25,6 +25,7 @@ input {
     width: 300px;
     box-sizing: border-box;
     border: 1px solid #999;
+    
 }
   
 input:focus {
@@ -43,4 +44,9 @@ button {
     color: red;
     text-align: center;
     list-style: none;
+}
+
+.table-left {
+    text-align: center;
+    width: 120px;
 }

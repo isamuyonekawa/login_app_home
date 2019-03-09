@@ -16,7 +16,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
   
   $errors = array();
   if ($user && password_verify($_POST['password'], $user['password']) && $user['delete_flag'] == 0) {
-    
     //セッションIDの変更
     session_regenerate_id(true);
     $_SESSION['id'] = $user['id'];
@@ -30,37 +29,37 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
 <!DOCTYPE html>
 <html lang="ja">
-  <head>
+<head>
     <meta charset="utf-8">
     <title>管理者ログイン</title>
     <link rel="stylesheet" type="text/css" href="../css/form.css">
-  </head>
-  <body>
+</head>
+<body>
     <header>
         <a href="/login_app/time_record.php">タイムカード</a>
     </header>
     <h1>管理者ログイン</h1>
 
     <?php if (!empty($errors)): ?>
-      <ul class="validation_error">
-        <?php foreach ($errors as $error): ?>
-          <li><?php echo $error; ?></li>
-        <?php endforeach; ?>
-      </ul>
+        <ul class="validation_error">
+            <?php foreach ($errors as $error): ?>
+                <li><?php echo $error; ?></li>
+            <?php endforeach; ?>
+        </ul>
     <?php endif; ?>
 
     <form action="" method="post">
-      <div>
-        <label for="name">ユーザー名:</label>
-        <input type="text" id="name" name="user_name" autofocus>
-      </div>
-      <div>
-        <label for="pass">パスワード:</label>
-        <input type="password" id="pass" name="password">
-      </div>
-      <div class="button">
-        <button type="submit">ログイン</button>
-      </div>
+        <div>
+            <label for="name">ユーザー名:</label>
+            <input type="text" id="name" name="user_name" autofocus>
+        </div>
+        <div>
+            <label for="pass">パスワード:</label>
+            <input type="password" id="pass" name="password">
+        </div>
+        <div class="button">
+            <button type="submit">ログイン</button>
+        </div>
     </form>
-  </body>
+</body>
 </html>

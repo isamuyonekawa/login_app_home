@@ -3,6 +3,11 @@ require('dbconnect.php');
 require('EmployeeClass.php');
 session_start();
 
+if (!isset($_SESSION['id'])) {
+    header('Location: /login_app/admin/sign_in.php');
+    exit();
+}
+
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $serach_date = filter_input(INPUT_POST, 'y_m');
     $emp_id = filter_input(INPUT_POST, 'id');
@@ -12,10 +17,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $serach_date,
         $emp_id
     ));
-    
+
     $emp_state = $db->prepare('SELECT * FROM employees WHERE id=?');
     $emp_state->execute(array($emp_id));
     $emp_record = $emp_state->fetch();
+
     $emp = new Employee($emp_record['id'], $emp_record['last_name'], $emp_record['first_name'], $emp_record['emp_user_name'], $emp_record['emp_delete_flag']);
 }
 ?>
@@ -47,7 +53,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     <th>日付</th>
                     <th>打刻時間</th>
                     <th>状態</th>
-                </tr>           
+                </tr>
             </thead>
             <tbody>
                 <?php while ($record = $state->fetch()): ?>
@@ -60,10 +66,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             </tbody>
             <tfoot>
                 <tr>
-                <td colspan="3">社員名：<?php echo $emp->getName(); ?></td>
+                    <td colspan="3">社員名：<?php echo $emp->getName(); ?></td>
                 </tr>
             </tfoot>
         </table>
     </div>
+    <form action="./csv.php" method="POST">
+        <input type="hidden" name="id" value="<?php echo $emp->getId(); ?>">
+        <input type="hidden" name="y_m" value="<?php echo $serach_date; ?>">
+        <input type="submit" value="CSVダウンロード">
+    </form>
 </body>
 </html>

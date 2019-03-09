@@ -16,7 +16,6 @@ if (!isset($_SESSION['id'])) {
 </head>
 <body>
     <header>
-
     </header>
     <div class="main">
         <ul>
@@ -26,7 +25,6 @@ if (!isset($_SESSION['id'])) {
         </ul>
     </div>
     <footer>
-
     </footer>
 </body>
 </html>

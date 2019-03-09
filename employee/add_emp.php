@@ -7,7 +7,6 @@ if (!isset($_SESSION['id'])) {
     exit();
 }
 
-//社員登録機能作成
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $errors = array();
     
@@ -15,7 +14,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     if (isset($error)) {
         $errors['last_first'] = $error;
     }
-
+    
     $error = emp_user_name_validation($_POST['emp_user_name']);
     if (isset($error)) {
         $errors['emp_user_name'] = $error;
