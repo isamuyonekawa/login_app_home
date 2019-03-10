@@ -22,7 +22,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $emp_state->execute(array($emp_id));
     $emp_record = $emp_state->fetch();
 
-    $emp = new Employee($emp_record['id'], $emp_record['last_name'], $emp_record['first_name'], $emp_record['emp_user_name'], $emp_record['emp_delete_flag']);
+    $emp = new Employee($emp_record['id'], $emp_record['last_hurigana'], $emp_record['first_hurigana'], $emp_record['last_name'], $emp_record['first_name'], $emp_record['emp_user_name'], $emp_record['emp_delete_flag']);
 }
 ?>
 

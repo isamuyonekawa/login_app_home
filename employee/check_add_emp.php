@@ -8,13 +8,16 @@ if (!isset($_SESSION['join']) && !isset($_SESSION['id'])) {
 }
 
 if ($_SERVER['REQUEST_METHOD'] == 'GET') {
+    $hurigana = $_SESSION['join']['last_hurigana'] . ' ' . $_SESSION['join']['first_hurigana'];
     $name = $_SESSION['join']['last_name'] . ' ' . $_SESSION['join']['first_name'];
     $emp_user_name = $_SESSION['join']['emp_user_name'];
 }
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_SESSION['join'])) {
-    $state = $db->prepare('INSERT INTO employees SET last_name=?, first_name=?, emp_user_name=?, created_at=NOW()');
+    $state = $db->prepare('INSERT INTO employees SET last_hurigana=?, first_hurigana=?, last_name=?, first_name=?, emp_user_name=?, created_at=NOW()');
     $state->execute(array(
+        $_SESSION['join']['last_hurigana'],
+        $_SESSION['join']['first_hurigana'],
         $_SESSION['join']['last_name'],
         $_SESSION['join']['first_name'],
         $_SESSION['join']['emp_user_name']
@@ -40,6 +43,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_SESSION['join'])) {
     <div class="main">
         <h1>社員登録確認</h1>
         <form action="" method="POST">
+            <div>
+                <table>
+                    <tr>
+                        <td class="table-left">ふりがな:</td>
+                        <td class="table-right"><?php echo htmlspecialchars($hurigana, ENT_QUOTES, 'UTF-8') ?></td>
+                    </tr>
+                </table>
+            </div>
             <div>
                 <table>
                     <tr>

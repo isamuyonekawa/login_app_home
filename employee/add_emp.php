@@ -9,6 +9,11 @@ if (!isset($_SESSION['id'])) {
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $errors = array();
+
+    $error =  hurigana_validation($_POST['last_hurigana'], $_POST['first_hurigana']);
+    if (isset($error)) {
+        $errors['hurigana'] = $error;
+    }
     
     $error = last_first_validation($_POST['last_name'], $_POST['first_name']);
     if (isset($error)) {
@@ -51,6 +56,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         <?php endif; ?>
 
         <form action="" method="POST">
+            <div>
+                <label for="name">ふりがな:</label>
+                <input type="text" name="last_hurigana" maxlength="50" placeholder="せい" class="name" id="name" required> 
+                <input type="text" name="first_hurigana" maxlength="50" placeholder="めい" class="name" required>
+            </div>
             <div>
                 <label for="last_name">お名前:</label>
                 <input type="text" name="last_name" maxlength="50" placeholder="姓" class="name" id="last_name" required> 
